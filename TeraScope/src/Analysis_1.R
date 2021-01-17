@@ -82,3 +82,20 @@ box_plot = box_plot %>% filter(eventType == "STOP")
 ggsave(file.path('graphs', 'Boxplot of event names.png'))
 ##---------------------------------------------------------------------------------------------
 
+## scatter plot for identifying outliers in uploading time
+
+x1 = master_tera_data %>% filter(eventName == "Uploading")
+x1 = x1 %>% filter(eventType == "START")
+
+x2 = x1
+x2 = x2 %>% 
+    group_by(x2$seconds) %>%   summarise(avg_uploading = mean(time_difference))
+
+names(x2)[1] = "seconds"
+
+
+(s3plot = plot(x2$seconds, x2$avg_uploading, type = "p"))
+
+
+
+
