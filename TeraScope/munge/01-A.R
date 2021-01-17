@@ -54,3 +54,16 @@ fill_tera_data = fill_tera_data %>%
   mutate(to_fill = !is.na(zoo::na.locf(level, fromLast = TRUE, na.rm = FALSE)),
          filled_level = if_else(to_fill, zoo::na.locf(level, na.rm = FALSE),
                                 pmax(first(level), zoo::na.locf(level, na.rm = FALSE))), )
+
+## Cleaning the dataset
+drop_columns <- c("taskId","jobId.x","jobId.y","x","y","level","to_fill")
+fill_tera_data = fill_tera_data[,!(names(fill_tera_data) %in% drop_columns)]
+
+fill_tera_data = fill_tera_data[, c(1, 12, 2, 3, 4, 11, 13, 14, 15, 16, 5, 6, 7, 8, 9, 10)]
+names(fill_tera_data)[2] = "taskId"
+names(fill_tera_data)[7] = "x"
+names(fill_tera_data)[8] = "y"
+names(fill_tera_data)[9] = "jobId"
+names(fill_tera_data)[10] = "level"
+
+fill_tera_data$gpuSerial = as.character(fill_tera_data$gpuSerial)
