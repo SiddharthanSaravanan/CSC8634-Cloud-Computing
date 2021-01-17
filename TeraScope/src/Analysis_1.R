@@ -52,3 +52,23 @@ Uploading_data = Uploading[Uploading_i,]
 
 (plot_4 = ggplot(Uploading, aes(y, -x)) + geom_tile(aes(fill= time_difference))+
     geom_point(data = Uploading_data, aes(y,-x)))
+
+#by Tiling time
+Tiling = master_tera_data %>% filter(eventName == "Tiling")
+Tiling = Tiling[,c(2,3,7,8,10,19)]
+Tiling = Tiling %>% distinct()
+
+list <- sort(Tiling$time_difference, index.return=TRUE, decreasing=TRUE)
+lapply = lapply(list, `[`, list$x %in% head(unique(list$x),10))
+Tiling_i = lapply$ix
+Tiling_data = Tiling[Tiling_i,]
+
+
+(plot_5 = ggplot(Tiling, aes(y, -x)) + geom_tile(aes(fill= time_difference))+
+    geom_point(data = Tiling_data, aes(y,-x)))
+
+
+(group_plot_1 = ggarrange(plot_1, plot_2, plot_3,plot_4, plot_5, 
+                           labels = c("Total Render Time", "Render Time", "Saving Config Time","Uploading Time","Tiling Time"),
+                           ncol = 2, nrow = 3)) %>% ggexport(filename = "graphs/Heat Map rendering time of events.png",
+                                                             width = 1500,height = 1500)
