@@ -12,3 +12,32 @@ gpu_data = gpu_data %>% distinct()
 checkpoints_tasks_data = merge(x = checkpoints_data, y = tasks_data, by = "taskId", all = TRUE)
 tera_data = full_join(checkpoints_tasks_data,gpu_data,by = c("timestamp", "hostname"))
 tera_data = tera_data[order(tera_data$hostname, tera_data$timestamp),]
+
+## fill the taskId's with the last occurred value
+fill_tera_data = tera_data %>%
+  mutate(to_fill = !is.na(zoo::na.locf(taskId, fromLast = TRUE, na.rm = FALSE)),
+         filled_taskId = if_else(to_fill, zoo::na.locf(taskId, na.rm = FALSE),
+                                 pmax(first(taskId), zoo::na.locf(taskId, na.rm = FALSE))), )
+
+## fill the x coordinates with the last occurred value
+fill_tera_data = fill_tera_data %>%
+  mutate(to_fill = !is.na(zoo::na.locf(x, fromLast = TRUE, na.rm = FALSE)),
+         filled_x = if_else(to_fill, zoo::na.locf(x, na.rm = FALSE),
+                            pmax(first(x), zoo::na.locf(x, na.rm = FALSE))), )
+
+## fill the y coordinates with the last occurred value
+fill_tera_data = fill_tera_data %>%
+  mutate(to_fill = !is.na(zoo::na.locf(y, fromLast = TRUE, na.rm = FALSE)),
+         filled_y = if_else(to_fill, zoo::na.locf(y, na.rm = FALSE),
+                            pmax(first(y), zoo::na.locf(y, na.rm = FALSE))), )
+
+## fill the jobId's with the last occurred value
+fill_tera_data = fill_tera_data %>%
+  mutate(to_fill = !is.na(zoo::na.locf(jobId.x, fromLast = TRUE, na.rm = FALSE)),
+         filled_jobId = if_else(to_fill, zoo::na.locf(jobId.x, na.rm = FALSE),
+                                pmax(first(jobId.x), zoo::na.locf(jobId.x, na.rm = FALSE))), )
+## fill the levels with the last occurred value
+fill_tera_data = fill_tera_data %>%
+  mutate(to_fill = !is.na(zoo::na.locf(level, fromLast = TRUE, na.rm = FALSE)),
+         filled_level = if_else(to_fill, zoo::na.locf(level, na.rm = FALSE),
+                                pmax(first(level), zoo::na.locf(level, na.rm = FALSE))), )
