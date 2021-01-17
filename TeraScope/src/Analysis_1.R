@@ -38,3 +38,17 @@ Saving_Config_data = Saving_Config[Saving_Config_i,]
 
 (plot_3 = ggplot(Saving_Config, aes(y, -x)) + geom_tile(aes(fill= time_difference))+
     geom_point(data = Saving_Config_data, aes(y,-x)))
+
+
+#by Uploading time
+Uploading = master_tera_data %>% filter(eventName == "Uploading")
+Uploading = Uploading[,c(2,3,7,8,10,19)]
+Uploading = Uploading %>% distinct()
+
+list <- sort(Uploading$time_difference, index.return=TRUE, decreasing=TRUE)
+lapply = lapply(list, `[`, list$x %in% head(unique(list$x),10))
+Uploading_i = lapply$ix
+Uploading_data = Uploading[Uploading_i,]
+
+(plot_4 = ggplot(Uploading, aes(y, -x)) + geom_tile(aes(fill= time_difference))+
+    geom_point(data = Uploading_data, aes(y,-x)))
