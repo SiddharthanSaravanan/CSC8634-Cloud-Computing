@@ -26,7 +26,6 @@ render_data = render[render_i,]
 (plot_2 = ggplot(render, aes(y, -x)) + geom_tile(aes(fill = time_difference)) + 
     geom_point(data = render_data, aes(y,-x)))
 
-
 #by Saving Config time
 Saving_Config = master_tera_data %>% filter(eventName == "Saving Config")
 Saving_Config = Saving_Config[,c(2,3,7,8,10,19)]
