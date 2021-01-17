@@ -72,3 +72,13 @@ Tiling_data = Tiling[Tiling_i,]
                            labels = c("Total Render Time", "Render Time", "Saving Config Time","Uploading Time","Tiling Time"),
                            ncol = 2, nrow = 3)) %>% ggexport(filename = "graphs/Heat Map rendering time of events.png",
                                                              width = 1500,height = 1500)
+
+## boxplot Analysis----------------------------------------------------------------------
+box_plot = which(is.na(master_tera_data$eventName))
+box_plot = master_tera_data[!is.na(master_tera_data$eventName),]
+box_plot = box_plot %>% filter(eventType == "STOP")
+
+(boxplot_1 = ggplot(box_plot, aes(y= time_difference, fill = eventName)) + geom_boxplot())
+ggsave(file.path('graphs', 'Boxplot of event names.png'))
+##---------------------------------------------------------------------------------------------
+
