@@ -12,3 +12,18 @@ total_rendering_data = total_rendering[total_rendering_i,]
 
 (plot_1 = ggplot(total_rendering, aes(y, -x)) + geom_tile(aes(fill = time_difference))+ 
     geom_point(data = total_rendering_data, aes(y,-x)))
+
+#by render time
+render = master_tera_data %>% filter(eventName == "Render")
+render = render[,c(2,3,7,8,10,19)]
+render = render %>% distinct()
+
+list = sort(render$time_difference, index.return=TRUE, decreasing=TRUE)
+lapply = lapply(list, `[`, list$x %in% head(unique(list$x),10))
+render_i = lapply$ix
+render_data = render[render_i,]
+
+
+
+(plot2 = ggplot(render, aes(y, -x)) + geom_tile(aes(fill = time_difference)) + 
+    geom_point(data = render_data, aes(y,-x)))
