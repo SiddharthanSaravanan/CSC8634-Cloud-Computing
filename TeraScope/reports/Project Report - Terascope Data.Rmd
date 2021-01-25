@@ -19,7 +19,20 @@ This scalable architecture was created for cloud based visualization where it is
 
 ## Insights of Data
 
-The dataset which is taken for the analysis was created from application checkpoint and system metric output from the production of the Terapixel image. It particularly consists of three datasets which are application-Checkpoints, GPU and Task-x-y. 
+The dataset which is taken for the analysis was created from application checkpoint and system metric output from the production of the Terapixel image. It particularly consists of three datasets which are application-Checkpoints, GPU and Task-x-y. Each dataset has different aspects which are used for the analysis to improve the performance of generating the Terapixel image. The **Hostname** and **TaskId** are the two variables which plays an important role that interconnects between these three datasets.
+
+*Application-Checkpoints dataset:*
+
+* The Application-Checkpoints dataset consists of six variables that are Timestamp - the time recorded based on each task that has been occured, Hostname - Hostname of the virtual machine auto-assigned by the Azure batch system, EventName - Name of each event occuring while rendering the application, EventType - Type of each event names, jobId - ID of the Azure batch job and TaskId - ID of the Azure batch task.
+
+* There are totally five different EventNames which includes TotalRender - the entire task, Render - the image tile is being rendered, Saving Config - Measure of a configuration, Tiling - Post processing of the rendered tile is taking place and Uploading - The output from post processing is uploaded to Azure storage.
+
+* Each TaskId is linked with the EventNames and each TaskId consists of all the five EventNames.
+
+*GPU dataset:*
+
+* The GPU dataset consists of eight variables that are Timestamp - the time recorded based on the GPU utilization of each hosts, Hostname - Hostname of the virtual machine auto-assigned by the Azure batch system, GPU Serial - The serial number of the physical GPU card, gpuUUID - The unique system id assigned by the Azure system to the GPU unit, powerDrawWatt - Power draw of the GPU in watts, gpuTempC - Temperature of the GPU utilized in Celsius, gpuUtilPerc - Percent utilisation of the GPU Core(s), gpuMemUtilPerc - Percent utilisation of the GPU memory.
+
 
 ```{r cars}
 
