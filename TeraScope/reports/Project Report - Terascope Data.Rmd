@@ -33,17 +33,133 @@ The dataset which is taken for the analysis was created from application checkpo
 
 * The GPU dataset consists of eight variables that are Timestamp - the time recorded based on the GPU utilization of each hosts, Hostname - Hostname of the virtual machine auto-assigned by the Azure batch system, GPU Serial - The serial number of the physical GPU card, gpuUUID - The unique system id assigned by the Azure system to the GPU unit, powerDrawWatt - Power draw of the GPU in watts, gpuTempC - Temperature of the GPU utilized in Celsius, gpuUtilPerc - Percent utilisation of the GPU Core(s), gpuMemUtilPerc - Percent utilisation of the GPU memory.
 
+* The GPU variables such as power drawn, Temperature, GPY utilization and GPU memory utilization are observed for every two second once each task takes place for rendering the Terapixel image.
 
-```{r cars}
+*Task-x-y dataset:*
 
+* The Task-x-y dataset consists of five variables that are TaskId - ID of the Azure batch task, jobId - ID of the Azure batch job, x - X co-ordinate of the image tile being rendered, y - Y co-ordinate of the image tile being rendered and level - The visualisation created is a zoomable "google maps style" map.
+
+* In total the image was rendered with the creation of 12 levels of zoom, while for analysing purpose the dataset consists of only 3 levels that are levels 4,8 and 12 where 12 being the zoomed right in level.
+
+* The X and Y variables given represent the co-ordinates of the image being rendered which corresponds to the city of Newcastle Upon Tyne.
+
+
+```{r include=FALSE}
+#Load the project
+library('ProjectTemplate')
+load.project()
+#Execute the analysis files
+source("src/Analysis_1.R")
+source("src/Analysis_2.R")
+source("src/Analysis_3.R")
 ```
 
-## Including Plots
+# Analysis
 
-You can also embed plots, for example:
+Before proceeding with the analysis, the data is inspected to verify whether the structure of the data is good for analysis and whether the data has duplicate observations in some of the responses. If the data contains duplicate observations then these should be removed as part of the data wrangling process. 
 
-```{r pressure, echo=FALSE}
+* From the given source of input it is stated that totally there are 65,793 tasks which are being rendered for getting the Terapixel image. 
 
+* Whereas, we could find the total observations in the Application-checkpoints dataset consists of 6,60,400, as each task processes five EventNames each and these EventNames are processed based on exactly two EventTypes, the total Observations should be 6,57,930. 
+
+* This clearly states there might be duplicates in the dataset and these duplicates are removed in both the Application-Checkpoints dataset and GPU dataset for further analysis to take place.
+
+## Data Pre-processing
+
+* The analysis is technical carried out mainly based on the data handling that has been done during the pre-processing process.
+
+* After removing the duplicates from the dataset, all the three datasets are combined respectively into one Master dataset based on the **TaskId**, **Hostname** and **Timestamp** variables. 
+
+* Further to this, the TimeStamp variable is converted completed into seconds which could be easy for the analysis to take place. This process is done by splitting up of the Timestamp variable based on the unknown attributes and converted the Hours, minutes and seconds of the variable to Seconds completely.
+
+* While combining the three datasets as a single Master data there might be *NA* values in the variables, since there wont be any match of the Timestamp observed in the GPU dataset with the Checkpoints dataset as GPU data is observed and noted at every two seconds as the GPU node was being Utilized.
+
+* Hence these are handled by using the Last occurance function which replaces the *NA* value of a variable with the last occured value of that particular variable.
+
+## Graphical Analysis
+
+The graphical analysis is made with Heat maps, line graphs, points, bar plots and box plots which helps to visualize and interpret the data. The **ggplot2** library is used for this graphical analysis.
+
+**Graphical representation 1 :**
+
+```{r, echo=FALSE, figures-side1, fig.show="hold", out.width="50%"}
+par(mar = c(4, 4, .1, .1))
+plot_1
+plot_2
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r, echo=FALSE, figures-side2, fig.show="hold", out.width="50%"}
+par(mar = c(4, 4, .1, .1))
+plot_3
+plot_4
+```
+
+```{r, echo=FALSE, figures-side3, fig.show="hold", out.width="50%"}
+par(mar = c(4, 4, .1, .1))
+plot_5
+```
+
+* This
+
+**Graphical representation 2 :**
+
+```{r, BoxPlot, echo=FALSE}
+boxplot_1
+```
+
+
+**Graphical representation 3 :**
+
+```{r, echo=FALSE, figures-side4, fig.show="hold", out.width="50%"}
+par(mar = c(4, 4, .1, .1))
+plot_6
+plot_7
+```
+
+```{r, echo=FALSE, figures-side5, fig.show="hold", out.width="50%"}
+par(mar = c(4, 4, .1, .1))
+plot_8
+plot_9
+```
+
+**Graphical representation 4 :**
+
+```{r, echo=FALSE, figures-side6, fig.show="hold", out.width="50%"}
+par(mar = c(4, 4, .1, .1))
+plot_10
+plot_11
+```
+
+```{r, echo=FALSE, figures-side7, fig.show="hold", out.width="50%"}
+par(mar = c(4, 4, .1, .1))
+plot_12
+plot_13
+```
+
+
+**Graphical representation 5 :**
+
+
+```{r, LineGraph, echo=FALSE}
+plot_14
+```
+
+
+**Graphical representation 6 :**
+
+```{r, echo=FALSE, figures-side8, fig.show="hold", out.width="50%"}
+par(mar = c(4, 4, .1, .1))
+plot_15
+plot_16
+```
+
+```{r, echo=FALSE, figures-side9, fig.show="hold", out.width="50%"}
+par(mar = c(4, 4, .1, .1))
+plot_17
+plot_18
+```
+
+
+
+
+
