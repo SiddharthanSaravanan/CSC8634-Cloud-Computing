@@ -76,47 +76,59 @@ Before proceeding with the analysis, the data is inspected to verify whether the
 
 * Hence these are handled by using the Last occurance function which replaces the *NA* value of a variable with the last occured value of that particular variable.
 
+* To calculate the Time taken for each TaskId to complete a particular EventName, a new function Pivot Wider is used which converts the rows to columns based on the given criteria and thus helps in identifying the time taken for the process to complete.
+
+* Looking at the obtained dataset, it is evident that if the GPU utilisation is less than 10 then that particular GPU is not in use and hence, for the graphical analysis new columns have been added which consists of Total Power consumed, Average utilization Temparature, Average GPU utilization and Average GPU memory utilization for each TaskId and it was grouped together.
+
+* After these pre-processing steps, the final Master data is obtained which consists of 2201382 observations with 23 variables.
+
+```{r, echo=FALSE}
+head(master_tera_data)
+```
+
+* The above displayed dataset is the first few observations of the final Master dataset.
+
 ## Graphical Analysis
 
 The graphical analysis is made with Heat maps, line graphs, points, bar plots and box plots which helps to visualize and interpret the data. The **ggplot2** library is used for this graphical analysis.
 
 **Graphical representation 1 :**
 
-```{r, echo=FALSE, figures-side1, fig.show="hold", out.width="50%"}
+```{r, echo=FALSE, figures-side1, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
 plot_1
 plot_2
 ```
 
-```{r, echo=FALSE, figures-side2, fig.show="hold", out.width="50%"}
+```{r, echo=FALSE, figures-side2, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
 plot_3
 plot_4
 ```
 
-```{r, echo=FALSE, figures-side3, fig.show="hold", out.width="50%"}
+```{r, echo=FALSE, figures-side3, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
 plot_5
 ```
 
-* This
+* These five plots graphically explains the 
 
 **Graphical representation 2 :**
 
-```{r, BoxPlot, echo=FALSE}
+```{r, BoxPlot, echo=FALSE,fig.height=4, fig.width=7}
 boxplot_1
 ```
 
 
 **Graphical representation 3 :**
 
-```{r, echo=FALSE, figures-side4, fig.show="hold", out.width="50%"}
+```{r, echo=FALSE, figures-side4, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
 plot_6
 plot_7
 ```
 
-```{r, echo=FALSE, figures-side5, fig.show="hold", out.width="50%"}
+```{r, echo=FALSE, figures-side5, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
 plot_8
 plot_9
@@ -124,13 +136,13 @@ plot_9
 
 **Graphical representation 4 :**
 
-```{r, echo=FALSE, figures-side6, fig.show="hold", out.width="50%"}
+```{r, echo=FALSE, figures-side6, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
 plot_10
 plot_11
 ```
 
-```{r, echo=FALSE, figures-side7, fig.show="hold", out.width="50%"}
+```{r, echo=FALSE, figures-side7, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
 plot_12
 plot_13
@@ -140,20 +152,20 @@ plot_13
 **Graphical representation 5 :**
 
 
-```{r, LineGraph, echo=FALSE}
+```{r, LineGraph, echo=FALSE,fig.height=4, fig.width=7}
 plot_14
 ```
 
 
 **Graphical representation 6 :**
 
-```{r, echo=FALSE, figures-side8, fig.show="hold", out.width="50%"}
+```{r, echo=FALSE, figures-side8, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
 plot_15
 plot_16
 ```
 
-```{r, echo=FALSE, figures-side9, fig.show="hold", out.width="50%"}
+```{r, echo=FALSE, figures-side9, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
 plot_17
 plot_18
