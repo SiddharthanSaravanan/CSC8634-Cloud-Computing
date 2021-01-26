@@ -69,7 +69,7 @@ Tiling_data = Tiling[Tiling_i,]
 
 
 (group_plot_1 = ggarrange(plot_1, plot_2, plot_3,plot_4, plot_5, 
-                           labels = c("Total Render Time", "Render Time", "Saving Config Time","Uploading Time","Tiling Time"),
+                           labels = c("Total Render", "Render", "Saving Config","Uploading","Tiling"),
                            ncol = 2, nrow = 3)) %>% ggexport(filename = "graphs/Heat Map rendering time of events.png",
                                                              width = 1500,height = 1500)
 
