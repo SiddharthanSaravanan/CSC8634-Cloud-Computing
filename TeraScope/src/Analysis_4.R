@@ -29,6 +29,7 @@ outliers_gpu_gpu_temp_top10$category = "Average_GPU_Temp"
 outliers_gpu_gpu_util_top10$category = "Average_GPU_Util"
 outliers_gpu_gpu_memory_util_top10$category = "Average_GPU_Memory_Util"
 
+
 outliers_gpu_total_power_top10 = outliers_gpu_total_power_top10[,-c(3)]
 outliers_gpu_gpu_temp_top10 = outliers_gpu_gpu_temp_top10[,-c(3)]
 outliers_gpu_gpu_util_top10 = outliers_gpu_gpu_util_top10[,-c(3)]
@@ -42,4 +43,5 @@ top_10_gpu_util_mem = full_join(outliers_gpu_gpu_util_top10, outliers_gpu_gpu_me
 
 top_10_outliers_host_gpu = full_join(top_10_power_temp, top_10_gpu_util_mem, by = "hostname")
 
-
+example = union(outliers_gpu_total_power_top10, outliers_gpu_gpu_temp_top10, outliers_gpu_gpu_util_top10,
+                outliers_gpu_gpu_memory_util_top10)
