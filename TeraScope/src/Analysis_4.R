@@ -23,3 +23,23 @@ outliers_gpu_total_power_top10 = as.data.frame(tail(outliers_final_host_gpu_perf
 outliers_gpu_gpu_temp_top10 = as.data.frame(tail(outliers_final_host_gpu_performance_2[order(outliers_final_host_gpu_performance_2$average_gpu_tempC),],10))
 outliers_gpu_gpu_util_top10 = as.data.frame(tail(outliers_final_host_gpu_performance_3[order(outliers_final_host_gpu_performance_3$average_gpu_utilP),],10))
 outliers_gpu_gpu_memory_util_top10 = as.data.frame(tail(outliers_final_host_gpu_performance_4[order(outliers_final_host_gpu_performance_4$average_gpu_memory_utilP),],10))
+
+outliers_gpu_total_power_top10$category = "Total_power_drawn"
+outliers_gpu_gpu_temp_top10$category = "Average_GPU_Temp"
+outliers_gpu_gpu_util_top10$category = "Average_GPU_Util"
+outliers_gpu_gpu_memory_util_top10$category = "Average_GPU_Memory_Util"
+
+outliers_gpu_total_power_top10 = outliers_gpu_total_power_top10[,-c(3)]
+outliers_gpu_gpu_temp_top10 = outliers_gpu_gpu_temp_top10[,-c(3)]
+outliers_gpu_gpu_util_top10 = outliers_gpu_gpu_util_top10[,-c(3)]
+outliers_gpu_gpu_memory_util_top10 = outliers_gpu_gpu_memory_util_top10[,-c(3)]
+
+top_10_outliers_host_gpu = full_join(outliers_gpu_total_power_top10, outliers_gpu_gpu_temp_top10, outliers_gpu_gpu_util_top10,
+                                 outliers_gpu_gpu_memory_util_top10, by = "hostname")
+
+top_10_power_temp = full_join(outliers_gpu_total_power_top10, outliers_gpu_gpu_temp_top10, by = "hostname")
+top_10_gpu_util_mem = full_join(outliers_gpu_gpu_util_top10, outliers_gpu_gpu_memory_util_top10, by = "hostname")
+
+top_10_outliers_host_gpu = full_join(top_10_power_temp, top_10_gpu_util_mem, by = "hostname")
+
+
