@@ -111,7 +111,15 @@ par(mar = c(4, 4, .1, .1))
 plot_5
 ```
 
-* These five plots graphically explains the 
+* This graphical analysis is made using the Heat Map to represent time taken for each event to complete its process.
+
+* The regions that are lightly shaded in each graph represents that the time taken for completing process is high and the dark shaded regions represent that the time taken to complete the process is low. 
+
+* It is clearly visible that the EventName - *Render* is taking more time for completing the process and hence while pointing along the heatmap it displayed the Newcastle Town map as all the GPU's are taking time to compute the rendering process. 
+
+* Further to this, the time difference label shown near each graph explains that the other EventNames such as *Saving Config*, *Uploading* and *Tiling* have less time consumption than the *Render* task. 
+
+* The first plot represents the overall time taken for all the process to complete.
 
 **Graphical representation 2 :**
 
@@ -119,6 +127,11 @@ plot_5
 boxplot_1
 ```
 
+* The above analysis is made using the Box plot to represent the outliers of each EventNames based on the time difference, when the particular event has completed its process.
+
+* This plot clearly justifies the findings of the first graphical representation that other than the *Render* Event all the other Events takes less time for completing the process.
+
+* In this plot, we could see that there are some outliers for the *Uploading* Event, where the time taken is little higher while comparing to other two events which implies that when there is an increase in time taken by *Render* event there will be significant increase in the *Uploading* event.
 
 **Graphical representation 3 :**
 
@@ -134,30 +147,18 @@ plot_8
 plot_9
 ```
 
+* The above generated plots represents the GPU performance analysis which is made using the Heat Map.
+
+* Since the Heat Map is generated based on the x and y co-ordinates of the Terapixel image, we could see that first plot in this representation shows that almost all the regions consume higher power for completing the rendering process.
+
+* The temperature of the GPU won't fall to the bottom even though when there are no GPU's running at that moment and hence all the regions of the image is expected to be running on the average temperature range.
+
+* In this third plot of this representation we could see that the top left of the region is where less number GPU's are being utilized.
+
+* The GPU memory utilization Heat Map represents that some part of the regions have less utilized memory based on the performance.
+
+
 **Graphical representation 4 :**
-
-```{r, echo=FALSE, figures-side6, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
-par(mar = c(4, 4, .1, .1))
-plot_10
-plot_11
-```
-
-```{r, echo=FALSE, figures-side7, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
-par(mar = c(4, 4, .1, .1))
-plot_12
-plot_13
-```
-
-
-**Graphical representation 5 :**
-
-
-```{r, LineGraph, echo=FALSE,fig.height=4, fig.width=7}
-plot_14
-```
-
-
-**Graphical representation 6 :**
 
 ```{r, echo=FALSE, figures-side8, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
@@ -171,7 +172,80 @@ plot_17
 plot_18
 ```
 
+* The bar graphs represents the most and least GPU variable usages while rendering process takes place.
 
+* Looking at this analysis we could interpret that the total power drawn is very high when there is a high usage of GPU for rendering the image. 
+
+* Similarly some GPU's use less computational power which states that when those GPU's are used for rendering, the performance would significantly increase.
+
+* Further to this, the GPU utilization is more or less in same range for both the most and least used GPU nodes.
+
+* There is not much of a change in the memory utilization also, but if the GPU's are changed with respect to the less memory utilised GPU nodes, this might increase the computational power.
+
+* Similarly if the GPU nodes are changed with those that exhibits less temperature then it could increase the performance while rendering the image.
+
+
+**Graphical representation 5 :**
+
+```{r, LineGraph, echo=FALSE,fig.height=4, fig.width=7}
+plot_14
+```
+
+* This Line graph significantly explains that there is an equal amount of spikes in the usage of the power during the execution of each host names.
+
+* The graph is increased when there is a significant usage of power for rendering the image and it is eventually decreased below its mid range when the hosts are not in use.
+
+\newpage
+**Graphical representation 6 :**
+
+```{r, echo=FALSE, figures-side6, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
+par(mar = c(4, 4, .1, .1))
+plot_10
+plot_11
+```
+
+```{r, echo=FALSE, figures-side7, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
+par(mar = c(4, 4, .1, .1))
+plot_12
+plot_13
+```
+
+* This graphical representation is based on the outliers of each GPU variables with respect to the average GPU memory utilization while rendering the tasks.
+
+* From these four plots its visible that the top left region of the map takes very less computational power in the rendering process compared to all other regions.
+
+* And the region where the Newcastle stadium is located computes more energy in terms of power drawn, temperature and the GPU utlization, eventhough when there is less usage of GPU memory. 
+
+* This particular analysis is represented by taking out the most and least GPU variable usages while rendering the Terapixel image.
+
+
+# Business Solution
+
+* The analysis is mainly carried out in order to improve the Performance of the SuperComputer for generating the Terapixel image. 
+
+* From the obtained graphical representations, it is evident that some of the GPU nodes use high power for rendering the Terapixel image and the Temperature of those nodes is equally high.
+
+* To improve the performance of the SuperComputer we could suggest by replacing those high power consuming GPU nodes with respect to the less power consuming GPU nodes.
+
+* Along with this GPU temperature also plays a key role in which by replacing those high temperature consuming GPU nodes with less temperature consuming GPU nodes will significantly improve the performance of the SuperComputer.
+
+# Reproducibility
+
+* Project Template is used to pre-process the data, compute the necessary functions mentioned and then generate the report through the Rmarkdown.
+
+* If there is a new file which is required to generate the report, it should be inserted in the data directory which consists of any of the following three variables (*taskId*, *timestamp* or *hostname*) in order to analyse the performance of the super computer.
+
+* For the purpose of analysis the datasets are combined as a single dataframe and hence if there is any news files which should be reported, it needs to be manually update the pre-process file to combine the data which would be in the munge sub directory.
+
+* The analysis of the report is not completely reproducible as some manual interventions are required to change the variable names, binding up of the datasets as a single dataframe when there appears a new datafile.
+
+* The data file given is of huge size and hence while processing the files are stored in the Cache folder which can be used for multiple runs for reproducing the analysis. 
+
+* Apart from this, the report will be automatically generated when it is made to run from the R markdown report file which is in the Report sub directory.
+
+# Conclusion
+
+After the brief analysis of the observations available, rendering a Terapixel image computes high energy as it is made to be compact for smaller devices also. In order to improve the Performance of the Super Computer for generating such kind of a Terapixel image, it is recommended that replacing the GPU nodes which consumes only less power and less temperature for performing the rendering process could be the ideal solution. 
 
 
 
