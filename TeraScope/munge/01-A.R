@@ -24,6 +24,7 @@ tera_data$seconds = tera_data$V1.1*60*60+tera_data$V2*60+tera_data$V3
 tera_data = tera_data[,-c(17,18,19,20)]
 tera_data$seconds = as.numeric(tera_data$seconds)
 
+
 ## Fill the empty fields with the last occurred value for analysis
 
 ## fill the taskId's with the last occurred value
