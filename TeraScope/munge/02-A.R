@@ -25,7 +25,7 @@ gpu_total_render = gpu_total_render[,c(2,3,7,8,10,6,19,20,21,22,23)]
 
 
 #----------------------------------------------------------------------------------
-## gpu performance for each hostname
+## gpu performance for each hostname which are not in idle state
 
 host_gpu_performance = final_pivot_tera_data[,c(3,13,14,15,16)]
 host_gpu_performance = na.omit(host_gpu_performance)
@@ -43,6 +43,26 @@ final_host_gpu_performance = final_host_gpu_performance %>%
 
 
 names(final_host_gpu_performance)[1] = "hostname"
+
+#----------------------------------------------------------------------------------
+## gpu performance for each hostname which are in idle state
+
+host_gpu_performance_idle = final_pivot_tera_data[,c(3,13,14,15,16)]
+host_gpu_performance_idle = na.omit(host_gpu_performance_idle)
+rownames(host_gpu_performance_idle) <- 1:nrow(host_gpu_performance_idle)
+host_gpu_performance_idle = host_gpu_performance_idle %>% filter(gpuUtilPerc<10 & gpuMemUtilPerc<10)
+
+
+
+## final_host_gpu_performace = generating by summarizing the values
+
+final_host_gpu_performance_idle = host_gpu_performance_idle
+final_host_gpu_performance_idle = final_host_gpu_performance_idle %>% 
+  group_by(final_host_gpu_performance_idle$hostname) %>%   summarise(total_power_drawnW = sum(powerDrawWatt), average_gpu_tempC = mean(gpuTempC),
+                                                                average_gpu_utilP = mean(gpuUtilPerc),average_gpu_memory_utilP = mean(gpuMemUtilPerc))
+
+
+names(final_host_gpu_performance_idle)[1] = "hostname"
 
 #------------------------------------------------------------------------------------
 ## creating total power draw by gpu based on seconds
