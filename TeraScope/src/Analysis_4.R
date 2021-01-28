@@ -84,7 +84,7 @@ power_drawn_render_time = full_join(total_render_data, gpu_nonidle_data, by="hos
 
 power_drawn_render_time$power_per_second = round(power_drawn_render_time$totalPowerDraw / power_drawn_render_time$total_runtime,2)
 
-poor_performance_gpu = tail(power_drawn_render_time[order(power_drawn_render_time$power_per_sec),], 5)
+poor_performance_gpu = tail(power_drawn_render_time[order(power_drawn_render_time$power_per_second),], 5)
 
 poor_performance_gpu = left_join(poor_performance_gpu, master_tera_data, by = "hostname")
 
