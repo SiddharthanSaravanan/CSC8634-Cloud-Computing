@@ -8,7 +8,7 @@ final_host_gpu_performance$index = seq(1:nrow(final_host_gpu_performance))
 
 ## plot of gpu power drawn with series
 
-(plot_14 = ggplot(final_host_gpu_performance, aes(index, total_power_drawnW/1000))+ geom_line()+ylim(100,130)+
+(plot_14 = ggplot(final_host_gpu_performance, aes(index, total_power_drawnW/1000))+ geom_line()+
     labs(y = "total power drawn in kilowatt"))
 ggsave(file.path('graphs', 'Power drawn by gpu nodes in series.png'))
 ##----------------------------------------------------------------------------------------------------------------------------------
