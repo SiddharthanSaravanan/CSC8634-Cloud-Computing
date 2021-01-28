@@ -1,16 +1,21 @@
 ## based on x,y, and each gpu performance variable----------------------------------------------------
 
-(plot_6 = ggplot(gpu_total_render, aes(y, -x)) + geom_tile(aes(fill = total_power_drawnW)))
+(plot_6 = ggplot(gpu_total_render, aes(y, -x)) + geom_tile(aes(fill = total_power_drawnW)) +
+     labs(title = "Total Power Drawn based on TaskId", x = "Y co-ordinate", y = "-X co-ordinate"))
 
-(plot_7 = ggplot(gpu_total_render, aes(y, -x)) + geom_tile(aes(fill = average_gpu_tempC)))
+(plot_7 = ggplot(gpu_total_render, aes(y, -x)) + geom_tile(aes(fill = average_gpu_tempC)) +
+        labs(title = "Average GPU temperature based on TaskId", x = "Y co-ordinate", y = "-X co-ordinate"))
 
-(plot_8 = ggplot(gpu_total_render, aes(y, -x)) + geom_tile(aes(fill = average_gpu_utilP)))
+(plot_8 = ggplot(gpu_total_render, aes(y, -x)) + geom_tile(aes(fill = average_gpu_utilP)) +
+        labs(title = "Average GPU utilization based on TaskId", x = "Y co-ordinate", y = "-X co-ordinate"))
 
-(plot_9 = ggplot(gpu_total_render, aes(y, -x)) + geom_tile(aes(fill = average_gpu_memory_utilP)))
+(plot_9 = ggplot(gpu_total_render, aes(y, -x)) + geom_tile(aes(fill = average_gpu_memory_utilP)) +
+        labs(title = "Average GPU memory utilization based on TaskId", x = "Y co-ordinate", y = "-X co-ordinate"))
 
 
 
-(group_plot_2 = ggarrange(plot_6, plot_7, plot_8, plot_9, labels = c("A", "B", "C","D"),
+(group_plot_2 = ggarrange(plot_6, plot_7, plot_8, plot_9, labels = c("Total Power Drawn based on TaskId", "Average GPU temperature based on TaskId", 
+                                                                     "Average GPU utilization based on TaskId", "Average GPU memory utilization based on TaskId"),
                                      ncol = 2, nrow = 2)) %>% ggexport(filename = "graphs/Heat Map based on GPU performance.png",width = 1500,height = 1500)
 
 ## outliers on heat map based on total power drawn---------------------------------
@@ -27,7 +32,8 @@ outliers_total_power_drawn = gpu_total_render[gpu_i,]
 
 (plot_10 = ggplot(gpu_total_render, aes(y, -x)) +geom_tile(aes(fill = average_gpu_memory_utilP))+
     geom_point(data = outliers_total_power_drawn,aes(y,-x, color = total_power_drawnW))+
-    scale_color_gradient(low = "green", high = "red"))
+    scale_color_gradient(low = "green", high = "red")+
+        labs(title = "Outlier based on Power Drawn", x = "Y co-ordinate", y = "-X co-ordinate"))
 
 
 ##--------------------------------------------------------------------------------
@@ -47,7 +53,8 @@ outliers_average_gpu_temp = gpu_total_render[gpu_i,]
 
 (plot_11 = ggplot(gpu_total_render, aes(y, -x)) +geom_tile(aes(fill = average_gpu_memory_utilP))+
     geom_point(data = outliers_average_gpu_temp,aes(y,-x, color = average_gpu_tempC))+
-    scale_color_gradient(low = "green", high = "red"))
+    scale_color_gradient(low = "green", high = "red")+
+        labs(title = "Outlier based on Average Temp", x = "Y co-ordinate", y = "-X co-ordinate"))
 
 
 ##--------------------------------------------------------------------------------
@@ -67,7 +74,8 @@ outliers_average_gpu_util = gpu_total_render[gpu_i,]
 
 (plot_12 = ggplot(gpu_total_render, aes(y, -x)) +geom_tile(aes(fill = average_gpu_memory_utilP))+
     geom_point(data = outliers_average_gpu_util,aes(y,-x, color = average_gpu_utilP))+
-    scale_color_gradient(low = "green", high = "red"))
+    scale_color_gradient(low = "green", high = "red")+
+        labs(title = "Outlier based on Average GPU util", x = "Y co-ordinate", y = "-X co-ordinate"))
 
 
 ##--------------------------------------------------------------------------------
@@ -87,7 +95,8 @@ outliers_average_gpu_memory_util = gpu_total_render[gpu_i,]
 
 (plot_13 = ggplot(gpu_total_render, aes(y, -x)) +geom_tile(aes(fill = average_gpu_memory_utilP))+
     geom_point(data = outliers_average_gpu_memory_util,aes(y,-x, color = average_gpu_memory_utilP))+
-    scale_color_gradient(low = "green", high = "red"))
+    scale_color_gradient(low = "green", high = "red")+
+        labs(title = "Outlier based on Average GPU Memory Util", x = "Y co-ordinate", y = "-X co-ordinate"))
 
 ##--------------------------------------------------------------------------------
 (group_plot_3 = ggarrange(plot_10, plot_11, plot_12, plot_13, 
