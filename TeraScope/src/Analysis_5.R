@@ -6,4 +6,4 @@
   geom_point(data = poor_performance_gpu,aes(y,-x, color = hostname)))
 
 
-ggsave(file.path('graphs', 'Power drawn by gpu nodes in series.png'))
+ggsave(file.path('graphs', 'GPU nodes with poor performance.png'))
