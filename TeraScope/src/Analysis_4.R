@@ -74,7 +74,7 @@ top_10_outliers_host_gpu = rbind(outliers_gpu_total_power_top10, outliers_gpu_gp
 
 # Analysis to find poor performance of the GPU:
 
-gpu_nonidle_data = master_tera_data %>% filter(master_tera_data$gpuUtilPerc > 10 & master_tera_data$gpuMemUtilPerc > 10)
+gpu_nonidle_data = master_tera_data %>% filter(master_tera_data$gpuUtilPerc > 0 & master_tera_data$gpuMemUtilPerc > 0)
 
 gpu_nonidle_data = gpu_nonidle_data %>% group_by(hostname) %>% summarise(totalPowerDraw = sum(powerDrawWatt))
 
