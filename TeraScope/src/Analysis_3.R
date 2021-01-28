@@ -9,7 +9,7 @@ final_host_gpu_performance$index = seq(1:nrow(final_host_gpu_performance))
 ## plot of gpu power drawn with series
 
 (plot_14 = ggplot(final_host_gpu_performance, aes(index, total_power_drawnW/1000))+ geom_line()+
-    labs(y = "total power drawn in kilowatt"))
+    labs(title = "Power drawn by gpu nodes", x = "Index of hostnames", y = "total power drawn in kilowatt"))
 ggsave(file.path('graphs', 'Power drawn by gpu nodes in series.png'))
 ##----------------------------------------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ outliers_final_host_gpu_performance_1$index = as.character(outliers_final_host_g
 
 (plot_15 = ggplot(outliers_final_host_gpu_performance_1,aes(x = reorder(index, desc(-total_power_drawnW/1000)),total_power_drawnW/1000))+ 
     geom_col(aes(fill = total_power_drawnW/1000))+theme(axis.text.x=element_blank())+
-    labs(x = "", y = "total power drawn in kilo watt"))
+    labs(title = "Analysis of Power Drawn", x = "Index of hostnames", y = "Total power drawn in kilo watt"))
 
 
 ## top and bottom outliers of variables 2 - average_gpu_temp
@@ -52,7 +52,7 @@ outliers_final_host_gpu_performance_2$index = as.character(outliers_final_host_g
 
 (plot_16 = ggplot(outliers_final_host_gpu_performance_2,aes(x = reorder(index, desc(-average_gpu_tempC)),average_gpu_tempC))+ 
     geom_col(aes(fill = average_gpu_tempC))+theme(axis.text.x=element_blank())+
-    labs(x = "", y = "average_gpu_temp"))
+    labs(title = "Analysis of Temperature", x = "Index of hostnames", y = "Average GPU temperature"))
 
 
 
@@ -72,7 +72,7 @@ outliers_final_host_gpu_performance_3$index = as.character(outliers_final_host_g
 
 (plot_17 = ggplot(outliers_final_host_gpu_performance_3,aes(x = reorder(index, desc(-average_gpu_utilP)),average_gpu_utilP))+ 
     geom_col(aes(fill = average_gpu_utilP))+theme(axis.text.x=element_blank())+
-    labs(x = "", y = "average_gpu_util"))
+    labs(title = "Analysis of GPU util", x = "Index of hostnames", y = "Average GPU util"))
 
 
 
@@ -94,14 +94,14 @@ outliers_final_host_gpu_performance_4$index = as.character(outliers_final_host_g
 
 (plot_18 = ggplot(outliers_final_host_gpu_performance_4,aes(x = reorder(index, desc(-average_gpu_memory_utilP)),average_gpu_memory_utilP))+ 
     geom_col(aes(fill = average_gpu_memory_utilP))+theme(axis.text.x=element_blank())+
-    labs(x = "", y = "average_gpu_memory_util"))
+    labs(title = "Analysis of GPU Memory util", x = "Index of hostnames", y = "Average GPU memory Util"))
 
 
 
 
 (group_plot_3 = ggarrange(plot_15, plot_16, plot_17, plot_18, 
-          labels = c("A", "B", "C","D"),
-          ncol = 2, nrow = 2)) %>% ggexport(filename = "graphs/head -tail values of gpu performance variables of gpu hosts.png",
+          labels = c("Analysis of Power Drawn", "Analysis of temperature", "Analysis of GPU util","Analysis of GPU Memory util"),
+          ncol = 2, nrow = 2)) %>% ggexport(filename = "graphs//Head -Tail values of GPU performance variables of GPU hosts.png",
                                            width = 1500,height = 1500)
 
 ##------------------------------------------------------------------------------------------------------------------------------------------------------
