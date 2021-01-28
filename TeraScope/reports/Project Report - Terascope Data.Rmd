@@ -29,6 +29,7 @@ The dataset which is taken for the analysis was created from application checkpo
 
 * Each TaskId is linked with the EventNames and each TaskId consists of all the five EventNames.
 
+\newpage
 *GPU dataset:*
 
 * The GPU dataset consists of eight variables that are Timestamp - the time recorded based on the GPU utilization of each hosts, Hostname - Hostname of the virtual machine auto-assigned by the Azure batch system, GPU Serial - The serial number of the physical GPU card, gpuUUID - The unique system id assigned by the Azure system to the GPU unit, powerDrawWatt - Power draw of the GPU in watts, gpuTempC - Temperature of the GPU utilized in Celsius, gpuUtilPerc - Percent utilisation of the GPU Core(s), gpuMemUtilPerc - Percent utilisation of the GPU memory.
@@ -53,6 +54,7 @@ source("src/Analysis_1.R")
 source("src/Analysis_2.R")
 source("src/Analysis_3.R")
 source("src/Analysis_4.R")
+source("src/Analysis_5.R")
 ```
 
 # Analysis
@@ -95,7 +97,9 @@ head(master_tera_data)
 
 The graphical analysis is made with Heat maps, line graphs, points, bar plots and box plots which helps to visualize and interpret the data. The **ggplot2** library is used for this graphical analysis.
 
-**Graphical representation 1 :**
+**Analysis based on Event types**
+
+### Graphical representation 1 :
 
 ```{r, echo=FALSE, figures-side1, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
@@ -114,13 +118,19 @@ par(mar = c(4, 4, .1, .1))
 plot_5
 ```
 
-* This graphical analysis is made using the Heat Map to represent time taken for each tasks to complete its process.
+* This graphical analysis is made using the Heat Map to represent time taken for each tasks to complete its process by plotting over the x and y co-ordinates of the Terapixel image.
 
 * The Red points in the graph represent the regions where the highest time is taken for the tasks to complete the particular event process.
 
-* 
+* From the plots, it is observed that both the Saving Config and Tiling events have taken similar time for completing the process for each taskId's.
 
-**Graphical representation 2 :**
+* The Uploading event plot shows that majority of the regions are taking similar time for completing the process, whereas the regions which is filled with Red points seems to take higher time for completing the process for each TaskId's.
+
+* The Rendering event takes more time for completing each task and hence while plotting it with the X and Y co-ordinates we are able to generate a look a like plot of the original Terapixel image, Where the Red points shows the region which takes higher time for completing this event.
+
+* The total Render event is combination of all the events that takes place for completing the tasks. Hence, it also plots the graph similar to the Original Terapixel image.
+
+### Graphical representation 2 :
 
 ```{r, BoxPlot, echo=FALSE,fig.height=4, fig.width=7}
 boxplot_1
@@ -128,11 +138,16 @@ boxplot_1
 
 * The above analysis is made using the Box plot to represent the outliers of each EventNames based on the time difference, when the particular event has completed its process.
 
-* This plot clearly justifies the findings of the first graphical representation that other than the *Render* Event all the other Events takes less time for completing the process.
+* This plot clearly justifies the findings of the first graphical representation that the *Render* event dominates the total run time of generating the Terapixel image.
 
-* In this plot, we could see that there are some outliers for the *Uploading* Event, where the time taken is little higher while comparing to other two events which implies that when there is an increase in time taken by *Render* event there will be significant increase in the *Uploading* event.
+* In this plot, we could see that there are some outliers for the *Uploading* Event. From the findings from the first graphical representation and significantly with this box plot, we could observe that there are some tasks which takes excess time for completing this Uploading process.
 
-**Graphical representation 3 :**
+* In-order to explore this finding, we need further information of the size of the pixel that is being uploaded by those specific tasks which could be able to find the trend for this activity.
+
+\newpage
+**Analysis based on GPU Performance**
+
+### Graphical representation 3 - Based on TaskId :
 
 ```{r, echo=FALSE, figures-side4, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
@@ -146,56 +161,15 @@ plot_8
 plot_9
 ```
 
-* The above generated plots represents the GPU performance analysis which is made using the Heat Map.
+* The above generated plots represents the GPU performance analysis which is made using the Heat Map by plotting over the x and y co-ordinates of the Terapixel image based on the TaskId.
 
-* Since the Heat Map is generated based on the x and y co-ordinates of the Terapixel image, we could see that first plot in this representation shows that almost all the regions consume higher power for completing the rendering process.
+* The GPU performances are observed through four variables as PowerDrawn, Gpu Temperature, GPU utilization and GPU Memory utilization. 
 
-* The temperature of the GPU won't fall to the bottom even though when there are no GPU's running at that moment and hence all the regions of the image is expected to be running on the average temperature range.
+* This graph is generated by finding the summarized values of these variables with respect to each TaskId, which was earlier explained in the Data Pre-processing step.
 
-* In this third plot of this representation we could see that the top left of the region is where less number GPU's are being utilized.
+* There is not much information out of this plot, but this plot similarly makes the original Terapixel image.
 
-* The GPU memory utilization Heat Map represents that some part of the regions have less utilized memory based on the performance.
-
-
-**Graphical representation 4 :**
-
-```{r, echo=FALSE, figures-side8, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
-par(mar = c(4, 4, .1, .1))
-plot_15
-plot_16
-```
-
-```{r, echo=FALSE, figures-side9, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
-par(mar = c(4, 4, .1, .1))
-plot_17
-plot_18
-```
-
-* The bar graphs represents the most and least GPU variable usages while rendering process takes place.
-
-* Looking at this analysis we could interpret that the total power drawn is very high when there is a high usage of GPU for rendering the image. 
-
-* Similarly some GPU's use less computational power which states that when those GPU's are used for rendering, the performance would significantly increase.
-
-* Further to this, the GPU utilization is more or less in same range for both the most and least used GPU nodes.
-
-* There is not much of a change in the memory utilization also, but if the GPU's are changed with respect to the less memory utilised GPU nodes, this might increase the computational power.
-
-* Similarly if the GPU nodes are changed with those that exhibits less temperature then it could increase the performance while rendering the image.
-
-
-**Graphical representation 5 :**
-
-```{r, LineGraph, echo=FALSE,fig.height=4, fig.width=7}
-plot_14
-```
-
-* This Line graph significantly explains that there is an equal amount of spikes in the usage of the power during the execution of each host names.
-
-* The graph is increased when there is a significant usage of power for rendering the image and it is eventually decreased below its mid range when the hosts are not in use.
-
-\newpage
-**Graphical representation 6 :**
+### Graphical representation 4 - Based on TaskId :
 
 ```{r, echo=FALSE, figures-side6, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
@@ -209,14 +183,52 @@ plot_12
 plot_13
 ```
 
-* This graphical representation is based on the outliers of each GPU variables with respect to the average GPU memory utilization while rendering the tasks.
+* This graphical representation is based on the outliers of each GPU variables with respect to the average GPU memory utilization based on the performance of each tasks.
 
-* From these four plots its visible that the top left region of the map takes very less computational power in the rendering process compared to all other regions.
+* From these four plots its visible that the tasks which is being run on the top left corner of the Heat map takes less computational power overall.
 
-* And the region where the Newcastle stadium is located computes more energy in terms of power drawn, temperature and the GPU utlization, eventhough when there is less usage of GPU memory. 
+* From the first three plots of this representation, we could see the centre region of the map has used some high computational power while rendering the tasks. 
 
-* This particular analysis is represented by taking out the most and least GPU variable usages while rendering the Terapixel image.
+* The last plot shows that the centre region of the map uses less GPU memory utilization suggesting that the tasks which are performed in that particular region will either be the one that uses high computational power orelse the otherway.
 
+* This outlier representation is made by extracting the top and bottom 10 observations of each GPU variables.
+
+### Graphical representation 5 - Based on Hostname :
+
+```{r, echo=FALSE, figures-side8, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
+par(mar = c(4, 4, .1, .1))
+plot_15
+plot_16
+```
+
+```{r, echo=FALSE, figures-side9, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
+par(mar = c(4, 4, .1, .1))
+plot_17
+plot_18
+```
+
+* The bar graphs represents the most and least GPU variable usages while rendering process takes place based on the different hostnames.
+
+* From the first plot we could interpret that out of the top 10 hostnames, there are five hostnames which are consuming high power which suggests either the GPU's are not performing good or else the pixel that needs to be rendered is of huge size. 
+
+* The second plot of this representation shows the average temperature that was utilized for rendering the image using the observed hostnames. Its evident that the temperature lies in the range of 35% to 50% during the whole rendering process.
+
+* Further to this, the GPU utilization and GPU memory utilization is more or less in near range for both the most and least used GPU nodes.
+
+
+### Graphical representation 6 - Based on Hostname :
+
+```{r, LineGraph, echo=FALSE,fig.height=4, fig.width=7}
+plot_14
+```
+
+* This Line graph is generated based on creating an index value to the hostname with respect to the Total power consumption while rendering the Terapixel image.
+
+* From this representation, we could observe that there are some hostnames which consumes high power while rendering the Terapixel image.
+
+* These outliers of high usage might be based on poor performance of the GPU or may be based on size of the pixel that needs to be rendered.
+
+* To withstand and find outliers of these graphical representations, further analysis is made by finding out the high power consuming taskId's along with the hostnames so that we could find whether those particular GPU nodes have poor performance or the rendering time of a particular pixel is of huge size.
 
 # Business Solution
 
