@@ -19,7 +19,7 @@ This scalable architecture was created for cloud based visualization where it is
 
 ## Insights of Data
 
-The dataset which is taken for the analysis was created from application checkpoint and system metric output from the production of the Terapixel image. It particularly consists of three datasets which are application-Checkpoints, GPU and Task-x-y. Each dataset has different aspects which are used for the analysis to improve the performance of generating the Terapixel image. The **Hostname** and **TaskId** are the two variables which plays an important role that interconnects between these three datasets.
+The dataset which is taken for the analysis was created from application checkpoint and system metric output from the production of the Terapixel image. It particularly consists of three datasets which are application-Checkpoints, GPU and Task-x-y. Each dataset has different aspects which are used for the analysis to improve the performance of generating the Terapixel image. The **Hostname** and **TaskId** are the two variables which plays an important role that interconnects between these three datasets. There are totally 1024 GPU nodes and each are encoded as **Hostname**, **GPU Serial** and **gpuUUID**.
 
 *Application-Checkpoints dataset:*
 
@@ -52,6 +52,7 @@ load.project()
 source("src/Analysis_1.R")
 source("src/Analysis_2.R")
 source("src/Analysis_3.R")
+source("src/Analysis_4.R")
 ```
 
 # Analysis
@@ -78,7 +79,7 @@ Before proceeding with the analysis, the data is inspected to verify whether the
 
 * To calculate the Time taken for each TaskId to complete a particular EventName, a new function Pivot Wider is used which converts the rows to columns based on the given criteria and thus helps in identifying the time taken for the process to complete.
 
-* Looking at the obtained dataset, it is evident that if the GPU utilisation is less than 10 then that particular GPU is not in use and hence, for the graphical analysis new columns have been added which consists of Total Power consumed, Average utilization Temparature, Average GPU utilization and Average GPU memory utilization for each TaskId and it was grouped together.
+* While calculating the summarized GPU variables, we can assume that if the GPU utilization is less than 10 then that particular GPU is not in use and hence, for the graphical analysis new columns have been added which consists of Total Power consumed, Average utilization Temperature, Average GPU utilization and Average GPU memory utilization for each TaskId and it was grouped together based on the TaskId's whose GPU utilization is more than 10.
 
 * After these pre-processing steps, the final Master data is obtained which consists of 2201382 observations with 23 variables.
 
@@ -87,6 +88,8 @@ head(master_tera_data)
 ```
 
 * The above displayed dataset is the first few observations of the final Master dataset.
+
+* Further to this, a new dataset is generated which consists of Total Power consumed, Average utilization Temperature, Average GPU utilization and Average GPU memory utilization for each hostname and it was grouped together based on the hostnames whose GPU utilization is more than 10.
 
 ## Graphical Analysis
 
@@ -111,15 +114,11 @@ par(mar = c(4, 4, .1, .1))
 plot_5
 ```
 
-* This graphical analysis is made using the Heat Map to represent time taken for each event to complete its process.
+* This graphical analysis is made using the Heat Map to represent time taken for each tasks to complete its process.
 
-* The regions that are lightly shaded in each graph represents that the time taken for completing process is high and the dark shaded regions represent that the time taken to complete the process is low. 
+* The Red points in the graph represent the regions where the highest time is taken for the tasks to complete the particular event process.
 
-* It is clearly visible that the EventName - *Render* is taking more time for completing the process and hence while pointing along the heatmap it displayed the Newcastle Town map as all the GPU's are taking time to compute the rendering process. 
-
-* Further to this, the time difference label shown near each graph explains that the other EventNames such as *Saving Config*, *Uploading* and *Tiling* have less time consumption than the *Render* task. 
-
-* The first plot represents the overall time taken for all the process to complete.
+* 
 
 **Graphical representation 2 :**
 
