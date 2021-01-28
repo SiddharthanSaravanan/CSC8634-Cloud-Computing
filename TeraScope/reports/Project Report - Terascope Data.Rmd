@@ -81,7 +81,7 @@ Before proceeding with the analysis, the data is inspected to verify whether the
 
 * To calculate the Time taken for each TaskId to complete a particular EventName, a new function Pivot Wider is used which converts the rows to columns based on the given criteria and thus helps in identifying the time taken for the process to complete.
 
-* While calculating the summarized GPU variables, we can assume that if the GPU utilization is less than 10 then that particular GPU is not in use and hence, for the graphical analysis new columns have been added which consists of Total Power consumed, Average utilization Temperature, Average GPU utilization and Average GPU memory utilization for each TaskId and it was grouped together based on the TaskId's whose GPU utilization is more than 10.
+* While calculating the summarized GPU variables, we can assume that if the GPU utilization is less than 10 then that particular GPU is not in use and hence, for the graphical analysis new columns have been added which consists of Total Power consumed, Average utilization Temperature, Average GPU utilization and Average GPU memory utilization for each TaskId and it was grouped together based on the TaskId's whose GPU utilization is more than 0, which clearly implies that at 0% there is no usage of GPU and hence it is calculated with those observations which are in the working condition.
 
 * After these pre-processing steps, the final Master data is obtained which consists of 2201382 observations with 23 variables.
 
@@ -97,9 +97,10 @@ head(master_tera_data)
 
 The graphical analysis is made with Heat maps, line graphs, points, bar plots and box plots which helps to visualize and interpret the data. The **ggplot2** library is used for this graphical analysis.
 
-**Analysis based on Event types**
 
-### Graphical representation 1 :
+### Analysis based on Event types
+
+**Graphical representation 1 :**
 
 ```{r, echo=FALSE, figures-side1, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
@@ -130,7 +131,7 @@ plot_5
 
 * The total Render event is combination of all the events that takes place for completing the tasks. Hence, it also plots the graph similar to the Original Terapixel image.
 
-### Graphical representation 2 :
+**Graphical representation 2 :**
 
 ```{r, BoxPlot, echo=FALSE,fig.height=4, fig.width=7}
 boxplot_1
@@ -145,9 +146,9 @@ boxplot_1
 * In-order to explore this finding, we need further information of the size of the pixel that is being uploaded by those specific tasks which could be able to find the trend for this activity.
 
 \newpage
-**Analysis based on GPU Performance**
+### Analysis based on GPU Performance
 
-### Graphical representation 3 - Based on TaskId :
+**Graphical representation 3 - Based on TaskId :**
 
 ```{r, echo=FALSE, figures-side4, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
@@ -169,7 +170,7 @@ plot_9
 
 * There is not much information out of this plot, but this plot similarly makes the original Terapixel image.
 
-### Graphical representation 4 - Based on TaskId :
+**Graphical representation 4 - Based on TaskId :**
 
 ```{r, echo=FALSE, figures-side6, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
@@ -193,7 +194,7 @@ plot_13
 
 * This outlier representation is made by extracting the top and bottom 10 observations of each GPU variables.
 
-### Graphical representation 5 - Based on Hostname :
+**Graphical representation 5 - Based on Hostname :**
 
 ```{r, echo=FALSE, figures-side8, fig.show="hold", out.width="50%",fig.height=4, fig.width=7}
 par(mar = c(4, 4, .1, .1))
@@ -216,7 +217,7 @@ plot_18
 * Further to this, the GPU utilization and GPU memory utilization is more or less in near range for both the most and least used GPU nodes.
 
 
-### Graphical representation 6 - Based on Hostname :
+**Graphical representation 6 - Based on Hostname :**
 
 ```{r, LineGraph, echo=FALSE,fig.height=4, fig.width=7}
 plot_14
@@ -230,13 +231,62 @@ plot_14
 
 * To withstand and find outliers of these graphical representations, further analysis is made by finding out the high power consuming taskId's along with the hostnames so that we could find whether those particular GPU nodes have poor performance or the rendering time of a particular pixel is of huge size.
 
+## Analysis on finding Outliers
+
+### High computational power consuming TaskId's:
+
+* From the last observed graphical representation, it was evident that some of the hostnames are taking high power for completing each tasks.
+
+* To find out the outliers which are consuming high power, we are creating a dataset which consists each top 10 observations of taskId's which has high power, high GPU temperature, high GPU utilization and high GPU memory utilization.
+
+```{r, echo=FALSE}
+top_10_outliers_gpu %>% filter(top_10_outliers_gpu$rank <= 5)
+```
+
+* The above obtained is the top 5 taskId's with respect to the hostnames which are consuming high computational power based on the GPU variables for completing the rendering process of the Terapixel image.
+
+
+### High computational power consuming hostnames:
+
+* Similar to that of finding the outliers of high computational power GPU's based on TaskId's, a new dataset is generated to find the outliers based on the hostnames.
+
+* By creating a dataset which consists each top 10 observations of hostanmes which has high power, high GPU temperature, high GPU utilization and high GPU memory utilization, it is possible to compare whether are those hostnames similar to that of the hostnames obtained from the outliers dataset based on TaskId's.
+
+```{r, echo=FALSE}
+top_10_outliers_host_gpu %>% filter(top_10_outliers_host_gpu$rank <= 5)
+```
+
+* The above obtained is the top 5 hostanmes which are consuming high computational power based on the GPU variables for completing the rendering process of the Terapixel image.
+
+* From the results of these two datasets, its clear that the GPU nodes which are consuming high power for rendering the process are the same GPU nodes which is creating a outlier based on the TaskId's.
+
+* Further to this, an analysis is made to verify whether the GPU's nodes are performing poor or not.
+
+### Identifying performance of Poor GPU's:
+
+* To analyse the performance of all the GPU nodes, a dataset is created when the GPU is not in idle state.
+
+* From the obtained dataset, summarize the sum of total power drawn of each GPU by grouping with the hostnames.
+
+* The power utilised for each second during the process is then calculated by using the Total power drawn by each hostnames with respect to the total rendering time.
+
+* The obtained table consists of the power utilised by the hostnames for each second, from this we can identify the outliers of highly power consuming hostnames which implies that their performance is poor.
+
+```{r, echo=FALSE}
+poor_performance_gpu_final
+```
+
+* The above obtained are the GPU nodes which are high power for rendering the process for each taskId. These are the GPU nodes hostnames which was obtained in the previous analysis of the outliers based on the taskId and hostnames.
+
+* This clearly shows that these are the poorly performing GPU's which consumes high power while performing the tasks which reduces the performance of the SuperComputer.
+
 # Business Solution
 
 * The analysis is mainly carried out in order to improve the Performance of the SuperComputer for generating the Terapixel image. 
 
-* From the obtained graphical representations, it is evident that some of the GPU nodes use high power for rendering the Terapixel image and the Temperature of those nodes is equally high.
+* From the obtained analysis, it is evident that some of the GPU nodes use high power for rendering the Terapixel image and the Temperature of those nodes is equally high.
 
-* To improve the performance of the SuperComputer we could suggest by replacing those high power consuming GPU nodes with respect to the less power consuming GPU nodes.
+* To improve the performance of the SuperComputer we could suggest by replacing those high power consuming GPU nodes which was identified in the Analysis on finding Outliers step,  with respect to the less power consuming GPU nodes.
 
 * Along with this GPU temperature also plays a key role in which by replacing those high temperature consuming GPU nodes with less temperature consuming GPU nodes will significantly improve the performance of the SuperComputer.
 
@@ -250,7 +300,7 @@ plot_14
 
 * The analysis of the report is not completely reproducible as some manual interventions are required to change the variable names, binding up of the datasets as a single dataframe when there appears a new datafile.
 
-* The data file given is of huge size and hence while processing the files are stored in the Cache folder which can be used for multiple runs for reproducing the analysis. 
+* The data file given is of huge size and hence while processing, the files are stored in the Cache folder which can be used for multiple runs for reproducing the analysis. 
 
 * Apart from this, the report will be automatically generated when it is made to run from the R markdown report file which is in the Report sub directory.
 
