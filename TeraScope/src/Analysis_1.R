@@ -11,7 +11,8 @@ total_rendering_i = lapply$ix
 total_rendering_data = total_rendering[total_rendering_i,]
 
 (plot_1 = ggplot(total_rendering, aes(y, -x)) + geom_tile(aes(fill = time_difference))+ 
-    geom_point(data = total_rendering_data, aes(y,-x,color = "Darkred")))
+    geom_point(data = total_rendering_data, aes(y,-x,color = "Darkred")) + labs(title = "Total Render time based on TaskId",
+                                                                                x = "Y co-ordinate", y = "-X co-ordinate"))
 
 #by render time
 render = master_tera_data %>% filter(eventName == "Render")
@@ -24,7 +25,8 @@ render_i = lapply$ix
 render_data = render[render_i,]
 
 (plot_2 = ggplot(render, aes(y, -x)) + geom_tile(aes(fill = time_difference)) + 
-    geom_point(data = render_data, aes(y,-x,color = "Darkred")))
+    geom_point(data = render_data, aes(y,-x,color = "Darkred")) + labs(title = "Render time based on TaskId",
+                                                                       x = "Y co-ordinate", y = "Reverse X co-ordinate"))
 
 #by Saving Config time
 Saving_Config = master_tera_data %>% filter(eventName == "Saving Config")
@@ -37,7 +39,8 @@ Saving_Config_i = lapply$ix
 Saving_Config_data = Saving_Config[Saving_Config_i,]
 
 (plot_3 = ggplot(Saving_Config, aes(y, -x)) + geom_tile(aes(fill= time_difference))+
-    geom_point(data = Saving_Config_data, aes(y,-x,color = "Darkred")))
+    geom_point(data = Saving_Config_data, aes(y,-x,color = "Darkred")) + labs(title = "Saving Config time based on TaskId",
+                                                                              x = "Y co-ordinate", y = "-X co-ordinate"))
 
 
 #by Uploading time
@@ -51,7 +54,8 @@ Uploading_i = lapply$ix
 Uploading_data = Uploading[Uploading_i,]
 
 (plot_4 = ggplot(Uploading, aes(y, -x)) + geom_tile(aes(fill= time_difference))+
-    geom_point(data = Uploading_data, aes(y,-x,color = "Darkred")))
+    geom_point(data = Uploading_data, aes(y,-x,color = "Darkred")) + labs(title = "Uploading time based on TaskId",
+                                                                          x = "Y co-ordinate", y = "-X co-ordinate"))
 
 #by Tiling time
 Tiling = master_tera_data %>% filter(eventName == "Tiling")
@@ -65,7 +69,8 @@ Tiling_data = Tiling[Tiling_i,]
 
 
 (plot_5 = ggplot(Tiling, aes(y, -x)) + geom_tile(aes(fill= time_difference))+
-    geom_point(data = Tiling_data, aes(y,-x,color = "Darkred")))
+    geom_point(data = Tiling_data, aes(y,-x,color = "Darkred")) + labs(title = "Tiling time based on TaskId",
+                                                                       x = "Y co-ordinate", y = "-X co-ordinate"))
 
 
 (group_plot_1 = ggarrange(plot_1, plot_2, plot_3,plot_4, plot_5, 
@@ -78,7 +83,8 @@ box_plot = which(is.na(master_tera_data$eventName))
 box_plot = master_tera_data[!is.na(master_tera_data$eventName),]
 box_plot = box_plot %>% filter(eventType == "STOP")
 
-(boxplot_1 = ggplot(box_plot, aes(y= time_difference, fill = eventName)) + geom_boxplot())
+(boxplot_1 = ggplot(box_plot, aes(y= time_difference, fill = eventName)) + geom_boxplot() +
+        labs(title = "Boxplot of event names", y = "Time taken for Completion"))
 ggsave(file.path('graphs', 'Boxplot of event names.png'))
 ##---------------------------------------------------------------------------------------------
 
