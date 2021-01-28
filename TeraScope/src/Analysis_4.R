@@ -88,10 +88,10 @@ poor_performance_gpu = tail(power_drawn_render_time[order(power_drawn_render_tim
 
 poor_performance_gpu = left_join(poor_performance_gpu, master_tera_data, by = "hostname")
 
-poor_performance_gpu = poor_performance_gpu[,c(1,3,4,14,15)]
+poor_performance_gpu_final = poor_performance_gpu[,c(1,3,4,14,15)]
 
-poor_performance_gpu = drop_na(poor_performance_gpu %>% distinct())
-poor_performance_gpu = poor_performance_gpu %>% distinct()
-poor_performance_gpu = na.omit(poor_performance_gpu)  
+poor_performance_gpu_final = drop_na(poor_performance_gpu_final %>% distinct())
+poor_performance_gpu_final = poor_performance_gpu_final %>% distinct()
+poor_performance_gpu_final = na.omit(poor_performance_gpu_final)  
 
   
