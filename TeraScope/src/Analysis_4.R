@@ -29,8 +29,6 @@ top_10_outliers_gpu = rbind(outliers_total_power_drawn_top10, outliers_average_g
 
 top_10_outliers_gpu = top_10_outliers_gpu[,-c(3:11)]
 
-top_10_outliers_gpu = top_10_outliers_gpu[, c(2,3,4,1)]
-
 #---------------------------------------------------------------------------------------------------------------------------------------------
 #Finding top 10 Hostnames based on GPU variables:
 
