@@ -3,7 +3,7 @@
 task_gpu_performance = final_pivot_tera_data[,c(2,13,14,15,16)]
 task_gpu_performance = na.omit(task_gpu_performance)
 rownames(task_gpu_performance) <- 1:nrow(task_gpu_performance)
-task_gpu_performance = task_gpu_performance %>% filter(gpuUtilPerc>10 & gpuMemUtilPerc>10)
+task_gpu_performance = task_gpu_performance %>% filter(gpuUtilPerc>0 & gpuMemUtilPerc>0)
 
 
 
@@ -30,7 +30,7 @@ gpu_total_render = gpu_total_render[,c(2,3,7,8,10,6,19,20,21,22,23)]
 host_gpu_performance = final_pivot_tera_data[,c(3,13,14,15,16)]
 host_gpu_performance = na.omit(host_gpu_performance)
 rownames(host_gpu_performance) <- 1:nrow(host_gpu_performance)
-host_gpu_performance = host_gpu_performance %>% filter(gpuUtilPerc>10 & gpuMemUtilPerc>10)
+host_gpu_performance = host_gpu_performance %>% filter(gpuUtilPerc>0 & gpuMemUtilPerc>0)
 
 
 
@@ -47,9 +47,11 @@ names(final_host_gpu_performance)[1] = "hostname"
 #------------------------------------------------------------------------------------
 ## creating total power draw by gpu based on seconds
 
-power_drawn_seconds = master_tera_data %>% filter(gpuUtilPerc > 10 & gpuMemUtilPerc > 10)
-power_drawn_seconds = power_drawn_seconds[,c(6,13)]
+#power_drawn_seconds = master_tera_data %>% filter(gpuUtilPerc > 10 & gpuMemUtilPerc > 10)
+#power_drawn_seconds = power_drawn_seconds[,c(6,13)]
 
-power_drawn_seconds = power_drawn_seconds %>% 
-  group_by(power_drawn_seconds$seconds) %>%   summarise(total_power_drawnW = sum(powerDrawWatt)/1000)
-names(power_drawn_seconds)[1] = "seconds"
+#power_drawn_seconds = master_tera_data[,c(6,13)]
+
+#power_drawn_seconds = power_drawn_seconds %>% 
+ # group_by(power_drawn_seconds$seconds) %>%   summarise(total_power_drawnW = sum(powerDrawWatt)/1000)
+#names(power_drawn_seconds)[1] = "seconds"
